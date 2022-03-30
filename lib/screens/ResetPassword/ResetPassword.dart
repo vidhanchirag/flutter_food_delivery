@@ -1,8 +1,9 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food_delivery/screens/phonenumber/PhoneVerify.dart';
 import 'package:food_delivery/screens/signin/SignIn_Screen.dart';
-import 'package:food_delivery/screens/forgotpassword/ForgotPasswordAgain.dart';
+
 import 'package:food_delivery/utils/AppColors.dart';
 import 'package:food_delivery/utils/AppConstant.dart';
 import 'package:food_delivery/utils/Appconfig.dart';
@@ -13,22 +14,23 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ForgotPassword extends StatefulWidget {
-  const ForgotPassword({Key? key}) : super(key: key);
+class ResetPassword extends StatefulWidget {
+  const ResetPassword({Key? key}) : super(key: key);
 
   @override
-  _ForgotPasswordState createState() => _ForgotPasswordState();
+  _ResetPasswordState createState() => _ResetPasswordState();
 }
 
-class _ForgotPasswordState extends State<ForgotPassword> {
-
+class _ResetPasswordState extends State<ResetPassword> {
   late ScaffoldMessengerState scaffoldMessenger;
-  TextEditingController _emailControlled = new TextEditingController();
+  TextEditingController _NewPasswordControlled = new TextEditingController();
+  TextEditingController _ConfirmPasswordControlled = new TextEditingController();
   final toastmsg = ToastMsg();
   bool isLoading = false;
-  late SharedPreferences prefs;
-
-
+  bool _isObscure_1 = true;
+  bool _isObscure_2 = true;
+  String str_email_id="";
+  late SharedPreferences prefs1;
   @override
   Widget build(BuildContext context) {
     scaffoldMessenger = ScaffoldMessenger.of(context);
@@ -37,7 +39,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          AppConstant.Forgot_PasswordTXT,
+         'Reset Password',
           style: TextStyle(
             color: AppColors.font_red,
             fontSize: 21.0,
@@ -47,7 +49,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         backgroundColor: AppColors.PageBackgroundcolor,
         leading: InkWell(
           onTap: () {
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> SignIn_Screen()),
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> PhoneVerify()),
             );
           },
           child: Icon(
@@ -67,7 +69,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      AppConstant.Forgot_PasswordTXT,
+                      'Reset Password',
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         color: Colors.black,
@@ -77,17 +79,62 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     ),
                   ),
                 ),
+
                 Container(
+                  color: AppColors.input_color,
                   padding: EdgeInsets.only(left: 20.0,top: 30.0,right: 20.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(
-                      AppConstant.Email_lbl_Txt,
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        color: AppColors.font_light_gray,
-                        fontSize: 16.0,
-                        fontFamily: 'Poppins Regular',
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextFormField(
+                        cursorColor: AppColors.font_light_gray,
+                        keyboardType: TextInputType.emailAddress,
+                        textInputAction: TextInputAction.next,
+                        controller: _NewPasswordControlled,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.deny(RegExp(r' ')),
+                        ],
+                        //inputFormatters: [WhitelistingTextInputFormatter(RegExp(r'^[a-zA-Z0-9_\-=@,$,#,%,&,*\.;]+'))],
+                        obscureText: _isObscure_1,
+                        style: TextStyle(
+                          color: AppColors.font_light_gray,
+                          fontSize: 16.0,
+                          fontFamily: 'Poppins Regular',
+                        ),
+                        decoration: InputDecoration(
+                          labelText: 'New Password',
+                          labelStyle: TextStyle(color: AppColors.font_light_gray),
+                          //hintText: AppConstant.Email_TXT,
+                          suffixIcon: IconButton(
+                              icon: Icon(
+                                  _isObscure_1
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                  color: AppColors.red),
+                              onPressed: () {
+                                setState(() {
+                                  _isObscure_1 = !_isObscure_1;
+                                });
+                              }),
+
+                          //  hintStyle: TextStyle(color: Colors.white),
+                          errorStyle: TextStyle(
+                            color: Colors.red[500],
+                            fontSize: 15.0,
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: AppColors.box_border,width: 1.0),
+                            borderRadius: BorderRadius.circular(6.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: AppColors.box_border, width: 1.0),
+                            borderRadius: BorderRadius.circular(6.0),
+                          ),
+
+                          /* border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0)),*/
+                        ),
                       ),
                     ),
                   ),
@@ -103,21 +150,32 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         cursorColor: AppColors.font_light_gray,
                         keyboardType: TextInputType.emailAddress,
                         textInputAction: TextInputAction.done,
-                        controller: _emailControlled,
+                        controller: _ConfirmPasswordControlled,
                         inputFormatters: [
                           FilteringTextInputFormatter.deny(RegExp(r' ')),
                         ],
-                        //inputFormatters: [WhitelistingTextInputFormatter(RegExp(r'[a-zA-Z0-9]'))],
+                       // inputFormatters: [WhitelistingTextInputFormatter(RegExp(r'^[a-zA-Z0-9_\-=@,$,#,%,&,*\.;]+'))],
+                        obscureText: _isObscure_2,
                         style: TextStyle(
                           color: AppColors.font_light_gray,
                           fontSize: 16.0,
                           fontFamily: 'Poppins Regular',
                         ),
                         decoration: InputDecoration(
-                          labelText: AppConstant.Email_TXT,
+                          labelText: 'Confirm Password',
                           labelStyle: TextStyle(color: AppColors.font_light_gray),
                           //hintText: AppConstant.Email_TXT,
-                          suffixIcon: Icon(Icons.email, color: AppColors.red),
+                          suffixIcon: IconButton(
+                              icon: Icon(
+                                  _isObscure_2
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                  color: AppColors.red),
+                              onPressed: () {
+                                setState(() {
+                                  _isObscure_2 = !_isObscure_2;
+                                });
+                              }),
 
                           //  hintStyle: TextStyle(color: Colors.white),
                           errorStyle: TextStyle(
@@ -156,7 +214,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             Constant.isInternetAvailable().then((IsConnected) async {
                               if (IsConnected) {
                                 onLoaderShow();
-                                ForgotPasswrod(_emailControlled.text.trim());
+                               ResetPassword(str_email_id,_NewPasswordControlled.text.trim(),_ConfirmPasswordControlled.text.toString().trim());
                                 FocusScope.of(context).unfocus();
                               } else {
                                 toastmsg.showToast(
@@ -166,7 +224,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           }
                         },
                         child: Text(
-                          'Next',
+                          'Reset Password',
                           style: TextStyle(
                             color: AppColors.White,
                             fontSize: 14.0,
@@ -192,38 +250,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     );
   }
 
-  ForgotPasswrod(email) async {
-    Map data = {'email': email, 'is_resend': "0"};
-    print(data.toString());
-    final response = await http.post(Uri.parse(Appconfig.forgot_password),
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: data,
-        encoding: Encoding.getByName("utf-8")
-    );
-    setState(() {
-      isLoading = false;
-    });
-    if (response.statusCode == 200) {
-      Map<String, dynamic>resposne = jsonDecode(response.body);
-      if (resposne['success']) {
-        Map<String, dynamic>data = resposne['data'];
-        toastmsg.showToast("Your otp is: "+"${data['otp']}", context);
-        print(" ${data['otp']}");
-        initSharePref(data['email']);
-        _emailControlled.clear();
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> PhoneVerify()),);
-      }else{
-        _emailControlled.clear();
-        scaffoldMessenger.showSnackBar(SnackBar(content: Text("${resposne['message']}"),backgroundColor: AppColors.red));
-      }
-      //scaffoldMessenger.showSnackBar(SnackBar(content: Text("${resposne['message']}"),backgroundColor: AppColors.snak_bg_color));
-    }
-  }
-
-
   @override
   void onLoaderDismiss() {
     // TODO: implement onLoaderDismiss
@@ -240,21 +266,63 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     });
   }
   bool isValid() {
-    if (_emailControlled.text.isEmpty) {
-      toastmsg.showToast(AppConstant.email_error, context);
+    if (_NewPasswordControlled.text.isEmpty) {
+      toastmsg.showToast('Please enter your new password.', context);
       return false;
-    }
-    else if (!_emailControlled.text.contains(RegExp(
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+"))) {
-      toastmsg.showToast(AppConstant.email_valid_error, context);
+    } else if (_NewPasswordControlled.text.length < 8) {
+      toastmsg.showToast(AppConstant.Password_length_error, context);
       return false;
-    }else {
+    } else if (_ConfirmPasswordControlled.text.isEmpty) {
+      toastmsg.showToast('Please enter your confirm password.', context);
+      return false;
+    } else if (_ConfirmPasswordControlled.text.length < 8) {
+      toastmsg.showToast(AppConstant.Password_length_error, context);
+      return false;
+    }  else {
       return true;
     }
   }
-  Future<void> initSharePref(String email) async {
-    prefs = await SharedPreferences.getInstance();
-    prefs.setString(Appconfig.email, email);
-    print("prefs "+"prefs");
+  Future<SharedPreferences> islogedin() async {
+    prefs1 = await SharedPreferences.getInstance();
+    return prefs1;
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    islogedin().then((it) {
+      setState(() {
+        str_email_id = it.getString(Appconfig.email)!;
+        print("str_email_id " + str_email_id);
+      });
+    });
+  }
+
+  ResetPassword(String email,String NPassword,String CPassword) async {
+    Map data = {'email': email, 'new_password': NPassword,'confirm_password': CPassword};
+    print(data.toString());
+    final response = await http.post(Uri.parse(Appconfig.change_password),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: data,
+        encoding: Encoding.getByName("utf-8")
+    );
+    setState(() {
+      isLoading = false;
+    });
+    if (response.statusCode == 200) {
+      Map<String, dynamic>resposne = jsonDecode(response.body);
+      if (resposne['success']) {
+        toastmsg.showToast("${resposne['message']}", context);
+        _NewPasswordControlled.clear();
+        _ConfirmPasswordControlled.clear();
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> SignIn_Screen()),);
+      }else{
+        scaffoldMessenger.showSnackBar(SnackBar(content: Text("${resposne['message']}"),backgroundColor: AppColors.red));
+      }
+      //scaffoldMessenger.showSnackBar(SnackBar(content: Text("${resposne['message']}"),backgroundColor: AppColors.snak_bg_color));
+    }
   }
 }

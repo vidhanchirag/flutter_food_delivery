@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:food_delivery/screens/forgotpassword/ForgotPassword.dart';
 import 'package:food_delivery/screens/home/HomeScreen.dart';
 import 'package:food_delivery/screens/introscreen/OnBoardingScreen.dart';
@@ -27,7 +28,7 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
   bool _isObscure = true;
   final toastmsg = ToastMsg();
 
-  TextEditingController _emailControlled = TextEditingController();
+  TextEditingController _PhoneControlled = TextEditingController();
   TextEditingController _passwordControlled = TextEditingController();
   bool isLoading = false;
 
@@ -124,19 +125,21 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
                       alignment: Alignment.centerLeft,
                       child: TextFormField(
                         cursorColor: AppColors.font_light_gray,
-                        keyboardType: TextInputType.emailAddress,
+                        keyboardType: TextInputType.phone,
                         textInputAction: TextInputAction.next,
-                        controller: _emailControlled,
+                        maxLength: 13,
+                        controller: _PhoneControlled,
+
                         style: TextStyle(
                           color: AppColors.font_light_gray,
                           fontSize: 16.0,
                           fontFamily: 'Poppins Regular',
                         ),
                         decoration: InputDecoration(
-                          labelText: AppConstant.Email_TXT,
+                          labelText: 'Phone Number',
                           labelStyle: TextStyle(color: AppColors.font_light_gray),
                           //hintText: AppConstant.Email_TXT,
-                          suffixIcon: Icon(Icons.email, color: AppColors.red),
+                          suffixIcon: Icon(Icons.phone_android, color: AppColors.red),
 
                           //  hintStyle: TextStyle(color: Colors.white),
                           errorStyle: TextStyle(
@@ -169,6 +172,10 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
                         textInputAction: TextInputAction.done,
                         controller: _passwordControlled,
                         obscureText: _isObscure,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.deny(RegExp(r' ')),
+                        ],
+                      //  inputFormatters: [WhitelistingTextInputFormatter(RegExp(r'^[a-zA-Z0-9_\-=@,$,#,%,&,*\.;]+'))],
                         style: TextStyle(
                           color: AppColors.font_light_gray,
                           fontSize: 16.0,
@@ -244,7 +251,7 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
                                 if (IsConnected) {
                                   onLoaderShow();
                                   login(
-                                      _emailControlled.text.trim(),
+                                      _PhoneControlled.text.trim(),
                                       _passwordControlled.text.trim());
                                   FocusScope.of(context).unfocus();
                                 } else {
@@ -300,15 +307,13 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
   }
 
   bool isValid() {
-    if (_emailControlled.text.isEmpty) {
-      toastmsg.showToast(AppConstant.email_error, context);
+    if (_PhoneControlled.text.isEmpty) {
+      toastmsg.showToast(AppConstant.PhoneNumber_error, context);
       return false;
-    }
-    else if (!_emailControlled.text.contains(RegExp(
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+"))) {
-      toastmsg.showToast(AppConstant.email_valid_error, context);
+    } else if (_PhoneControlled.text.length < 10) {
+      toastmsg.showToast(AppConstant.PhoneNumber_length_error, context);
       return false;
-    } else if (_passwordControlled.text.length < 8) {
+    }  else if (_passwordControlled.text.length < 8) {
       toastmsg.showToast(AppConstant.Password_length_error, context);
       return false;
     } else {
@@ -362,8 +367,8 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
   */
 
 
-  login(email, password) async {
-    Map data = {'email': email, 'password': password};
+  login(phone, password) async {
+    Map data = {'mobile_no': phone, 'password': password};
     print(data.toString());
     final response = await http.post(Uri.parse(Appconfig.login),
         headers: {
@@ -380,24 +385,33 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
       Map<String, dynamic>resposne = jsonDecode(response.body);
       if (resposne['success']) {
         Map<String, dynamic>user = resposne['user'];
-        initSharePref(true,user['id'], user['name'],user['email']);
+        initSharePref(true,user['id'], user['name'],user['email'],user['mobile_no']);
+        _PhoneControlled.clear();
+        _passwordControlled.clear();
         Navigator.of(context,rootNavigator: true).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
       } else {
         print(" ${resposne['message']}");
+        _PhoneControlled.clear();
+        _passwordControlled.clear();
         scaffoldMessenger.showSnackBar(SnackBar(content: Text("${resposne['message']}"),backgroundColor: AppColors.red));
       }
+      _PhoneControlled.clear();
+      _passwordControlled.clear();
       scaffoldMessenger.showSnackBar(SnackBar(content: Text("${resposne['message']}"),backgroundColor: AppColors.snak_bg_color));
     } else {
+      _PhoneControlled.clear();
+      _passwordControlled.clear();
       scaffoldMessenger.showSnackBar(SnackBar(content: Text("Please try again!"),backgroundColor: AppColors.red));
     }
   }
 
-  Future<void> initSharePref(bool isLogin,int id,String name, String email) async {
+  Future<void> initSharePref(bool isLogin,int id,String name, String email,String phone) async {
     prefs = await SharedPreferences.getInstance();
     if (isLogin) {
       prefs.setInt(Appconfig.userid, id);
       prefs.setString(Appconfig.name, name);
       prefs.setString(Appconfig.email, email);
+      prefs.setString(Appconfig.phone, phone);
       prefs.setBool(Appconfig.is_login, true);
       //prefs.setBool(Appconfig.ischecked, isChecked);
       print("prefs "+"prefs");

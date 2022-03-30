@@ -1,8 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:food_delivery/screens/ResetPassword/ResetPassword.dart';
-import 'package:food_delivery/screens/findrestaurant/FindRestaurantsScreen.dart';
-import 'package:food_delivery/screens/signin/SignIn_Screen.dart';
+import 'package:flutter/services.dart';
+import 'package:food_delivery/screens/home/HomeScreen.dart';
 import 'package:food_delivery/screens/signup/SignUp.dart';
 import 'package:food_delivery/utils/AppColors.dart';
 import 'package:food_delivery/utils/AppConstant.dart';
@@ -14,20 +13,20 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class PhoneVerify extends StatefulWidget {
-  const PhoneVerify({Key? key}) : super(key: key);
+class PhoneNumberVerify extends StatefulWidget {
+  const PhoneNumberVerify({Key? key}) : super(key: key);
 
   @override
-  _PhoneVerifyState createState() => _PhoneVerifyState();
+  _PhoneNumberVerifyState createState() => _PhoneNumberVerifyState();
 }
 
-class _PhoneVerifyState extends State<PhoneVerify> {
+class _PhoneNumberVerifyState extends State<PhoneNumberVerify> {
   bool _isObscure = true;
   final toastmsg = ToastMsg();
   late SharedPreferences prefs1;
   late ScaffoldMessengerState scaffoldMessenger;
   bool isLoading = false;
-  String str_email_id = "",str_otp="";
+  String str_email_id = "",str_otp="",str_phone="";
 
   TextEditingController otp_controller_1 = new TextEditingController();
   TextEditingController otp_controller_2 = new TextEditingController();
@@ -53,7 +52,7 @@ class _PhoneVerifyState extends State<PhoneVerify> {
           onTap: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => SignIn_Screen()),
+              MaterialPageRoute(builder: (context) => SignUp()),
             );
           },
           child: Icon(
@@ -71,11 +70,11 @@ class _PhoneVerifyState extends State<PhoneVerify> {
                 children: [
                   Container(
                     padding:
-                        EdgeInsets.only(left: 10.0, top: 50.0, right: 10.0),
+                    EdgeInsets.only(left: 10.0, top: 50.0, right: 10.0),
                     child: Align(
                       alignment: Alignment.center,
                       child: Text(
-                        AppConstant.Verify_phone_number,
+                        'Verify Phone Number sent to you at '+str_phone,
                         textAlign: TextAlign.left,
                         style: TextStyle(
                             color: AppColors.black,
@@ -86,7 +85,7 @@ class _PhoneVerifyState extends State<PhoneVerify> {
                   ),
                   Container(
                     padding:
-                        EdgeInsets.only(left: 10.0, top: 20.0, right: 10.0),
+                    EdgeInsets.only(left: 10.0, top: 20.0, right: 10.0),
                     child: Align(
                       alignment: Alignment.center,
                       child: Text(
@@ -104,7 +103,8 @@ class _PhoneVerifyState extends State<PhoneVerify> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        padding: EdgeInsets.only(left: 10.0, top: 50.0, right: 10.0),
+                        padding:
+                        EdgeInsets.only(left: 10.0, top: 50.0, right: 10.0),
                         child: SizedBox(
                           height: 50,
                           width: 50,
@@ -118,6 +118,10 @@ class _PhoneVerifyState extends State<PhoneVerify> {
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.number,
                               textInputAction: TextInputAction.next,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.deny(RegExp(r' ')),
+                              ],
+                              //inputFormatters: [WhitelistingTextInputFormatter(RegExp(r'[a-zA-Z0-9]'))],
                               style: TextStyle(
                                 color: AppColors.font_light_gray,
                                 fontSize: 17.0,
@@ -149,7 +153,7 @@ class _PhoneVerifyState extends State<PhoneVerify> {
                       ),
                       Container(
                         padding:
-                            EdgeInsets.only(left: 10.0, top: 50.0, right: 10.0),
+                        EdgeInsets.only(left: 10.0, top: 50.0, right: 10.0),
                         child: SizedBox(
                           height: 50,
                           width: 50,
@@ -163,6 +167,10 @@ class _PhoneVerifyState extends State<PhoneVerify> {
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.number,
                               textInputAction: TextInputAction.next,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.deny(RegExp(r' ')),
+                              ],
+                              //inputFormatters: [UsNumberTextInputFormatter(RegExp(r'[a-zA-Z0-9]'))],
                               //controller: controller,
                               style: TextStyle(
                                 color: AppColors.font_light_gray,
@@ -194,7 +202,7 @@ class _PhoneVerifyState extends State<PhoneVerify> {
                       ),
                       Container(
                         padding:
-                            EdgeInsets.only(left: 10.0, top: 50.0, right: 10.0),
+                        EdgeInsets.only(left: 10.0, top: 50.0, right: 10.0),
                         child: SizedBox(
                           height: 50,
                           width: 50,
@@ -208,6 +216,10 @@ class _PhoneVerifyState extends State<PhoneVerify> {
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.number,
                               textInputAction: TextInputAction.next,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.deny(RegExp(r' ')),
+                              ],
+                              //inputFormatters: [WhitelistingTextInputFormatter(RegExp(r'[a-zA-Z0-9]'))],
                               //controller: controller,
                               style: TextStyle(
                                 color: AppColors.font_light_gray,
@@ -239,7 +251,7 @@ class _PhoneVerifyState extends State<PhoneVerify> {
                       ),
                       Container(
                         padding:
-                            EdgeInsets.only(left: 10.0, top: 50.0, right: 10.0),
+                        EdgeInsets.only(left: 10.0, top: 50.0, right: 10.0),
                         child: SizedBox(
                           height: 50,
                           width: 50,
@@ -249,10 +261,14 @@ class _PhoneVerifyState extends State<PhoneVerify> {
                             child: TextFormField(
                               //autofocus: autoFocus,
                               controller: otp_controller_4,
-                             // obscureText: _isObscure,
+                              obscureText: _isObscure,
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.number,
                               textInputAction: TextInputAction.done,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.deny(RegExp(r' ')),
+                              ],
+                              //inputFormatters: [WhitelistingTextInputFormatter(RegExp(r'[a-zA-Z0-9]'))],
                               //controller: controller,
                               style: TextStyle(
                                 color: AppColors.font_light_gray,
@@ -287,7 +303,7 @@ class _PhoneVerifyState extends State<PhoneVerify> {
                   ),
                   Container(
                     padding:
-                        EdgeInsets.only(left: 30.0, top: 40.0, right: 30.0),
+                    EdgeInsets.only(left: 30.0, top: 40.0, right: 30.0),
                     child: Align(
                       alignment: Alignment.center,
                       child: Container(
@@ -330,7 +346,7 @@ class _PhoneVerifyState extends State<PhoneVerify> {
                   ),
                   Container(
                     padding:
-                        EdgeInsets.only(left: 10.0, top: 30.0, right: 10.0),
+                    EdgeInsets.only(left: 10.0, top: 30.0, right: 10.0),
                     child: Align(
                       alignment: Alignment.center,
                       child: RichText(
@@ -348,15 +364,14 @@ class _PhoneVerifyState extends State<PhoneVerify> {
                               text: AppConstant.Resend_again,
                               recognizer: new TapGestureRecognizer()
                                 ..onTap = () {
-                                  otp_controller_1.clear();
-                                  otp_controller_2.clear();
-                                  otp_controller_3.clear();
-                                  otp_controller_4.clear();
                                   Constant.isInternetAvailable()
                                       .then((IsConnected) async {
                                     if (IsConnected) {
                                       onLoaderShow();
-
+                                      otp_controller_1.clear();
+                                      otp_controller_2.clear();
+                                      otp_controller_3.clear();
+                                      otp_controller_4.clear();
                                       ResendOTP(str_email_id);
                                       FocusScope.of(context).unfocus();
                                     } else {
@@ -376,7 +391,7 @@ class _PhoneVerifyState extends State<PhoneVerify> {
                   ),
                   Container(
                     padding:
-                        EdgeInsets.only(left: 10.0, top: 40.0, right: 10.0),
+                    EdgeInsets.only(left: 10.0, top: 40.0, right: 10.0),
                     child: Text(
                       AppConstant.by_signing,
                       textAlign: TextAlign.center,
@@ -396,7 +411,6 @@ class _PhoneVerifyState extends State<PhoneVerify> {
       ),
     );
   }
-
   Future<SharedPreferences> islogedin() async {
     prefs1 = await SharedPreferences.getInstance();
     return prefs1;
@@ -443,7 +457,9 @@ class _PhoneVerifyState extends State<PhoneVerify> {
     islogedin().then((it) {
       setState(() {
         str_email_id = it.getString(Appconfig.email)!;
+        str_phone = it.getString(Appconfig.phone)!;
         print("str_email_id " + str_email_id);
+        print("str_phone " + str_phone);
       });
     });
   }
@@ -499,7 +515,7 @@ class _PhoneVerifyState extends State<PhoneVerify> {
         otp_controller_2.clear();
         otp_controller_3.clear();
         otp_controller_4.clear();
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> ResetPassword()),);
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> HomeScreen()),);
       } else {
         otp_controller_1.clear();
         otp_controller_2.clear();
@@ -512,5 +528,4 @@ class _PhoneVerifyState extends State<PhoneVerify> {
       //scaffoldMessenger.showSnackBar(SnackBar(content: Text("${resposne['message']}"),backgroundColor: AppColors.snak_bg_color));
     }
   }
-
 }

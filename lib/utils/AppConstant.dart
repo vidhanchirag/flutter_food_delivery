@@ -66,6 +66,7 @@ class AppConstant {
   static const String PhoneNumber_lenght_error = "Phone number must be at least 10 digits";
   static const String address_error = "Please enter address.";
   static const String Password_length_error = "Enter password 8+ characters.";
+  static const String  PhoneNumber_length_error = "Enter 10+ digits as a phone number.";
 
   /******************************** ChangePassword screen ******************************/
 
@@ -83,7 +84,7 @@ class AppConstant {
 
   static const String Forgot_PasswordTXT = "Forgot Password";
   static const String Email_TXT = "Email";
-  static const String Email_lbl_Txt = "Enter your email address and we\nwill send you a rest instrucation.";
+  static const String Email_lbl_Txt = "Enter your email address and we\nwill send you a rest instruction.";
   static const String Email_reset_lbl_Txt = "We have sent a instructions email to Nawfazim@icloud.com.";
   static const String having_lbl_Txt = " Having problem?";
   static const String Email_error = "Provide Your Registered Email Id.";
@@ -93,13 +94,13 @@ class AppConstant {
 
   /******************************** Sign In Screen ******************************/
   static const String SignIn_Welcome_TXT = "Welcome to Food Delivery";
-  static const String SignIn_Enter_Email_phone_TXT = "Enter your phone number or email\nfor sign in, Or";
-  static const String SignIn_create_new_TXT = " Create new account.";
+  static const String SignIn_Enter_Email_phone_TXT = "Enter your phone number for sign in, Or\n";
+  static const String SignIn_create_new_TXT = "Create new account.";
 
   /******************************** Phone Contact Screen ******************************/
   static const String Login_into_foodly = "Login To Foodly";
-  static const String Verify_phone_number = "Verify Phone Number";
-  static const String Enter_4_digit_Txt = "Enter the 4-Digit code sent to you at\n+1501333982";
+  static const String Verify_phone_number = "Verify Otp Number";
+  static const String Enter_4_digit_Txt = "Enter the 4-Digit code";
   static const String Didnt_recieve_Txt = "Didn't receive code?";
 
   /******************************** Find Restaurnt Screen ******************************/

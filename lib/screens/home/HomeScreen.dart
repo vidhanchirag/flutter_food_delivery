@@ -37,45 +37,19 @@ class _HomeScreenState extends State<HomeScreen> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: ImageIcon(AssetImage("assets/home_tab.png"),),
-              title: Text(
-                'Home',
-                style: TextStyle(
-                  color: AppColors.red,
-                  fontSize: 10.0,
-                  fontFamily: 'Poppins Medium',
-                ),
-              ),
+              label: 'Home',
             ),
             BottomNavigationBarItem(
               icon: ImageIcon(AssetImage("assets/search_tab.png")),
-              title: Text(
-                'Search',
-                style: TextStyle(
-                  color: AppColors.font_light_gray,
-                  fontSize: 10.0,
-                  fontFamily: 'Poppins Medium',
-                ),
-              ),
+            label: 'Search',
             ),
             BottomNavigationBarItem(
               icon: ImageIcon(AssetImage("assets/orders_tab.png")),
-              title: Text(
-                'Orders',
-                style: TextStyle(
-                  color: AppColors.font_light_gray,
-                  fontSize: 10.0,
-                  fontFamily: 'Poppins Medium',
-                ),
-              ),
+            label: 'Orders'
             ),
             BottomNavigationBarItem(
               icon: ImageIcon(AssetImage("assets/profile_tab.png")),
-              title: Text('Profile',
-                style: TextStyle(
-                  color: AppColors.font_light_gray,
-                  fontSize: 10.0,
-                  fontFamily: 'Poppins Medium',
-                ),),
+             label:'Profile'
             ),
           ],
           unselectedIconTheme: IconThemeData(
@@ -85,6 +59,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
           currentIndex: _selectedIndex,
           selectedItemColor: AppColors.red,
+          unselectedItemColor: AppColors.font_light_gray,
+          selectedLabelStyle: TextStyle(fontSize: 12,fontFamily: 'Poppins Medium'),
+          unselectedLabelStyle: TextStyle(fontSize: 12,fontFamily: 'Poppins Medium'),
           iconSize: 40,
           onTap: _onItemTapped,
           elevation: 5),

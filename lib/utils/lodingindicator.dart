@@ -25,7 +25,7 @@ class LoadingIndicator {
                     ],
                   )),*/
               child: SpinKitCircle(
-                color:AppColors.SaveButtoncolor,
+                color:AppColors.PageContainerGreycolor,
                 size: 50.0,
                 //controller: AnimationController(vsync:context,duration: const Duration(milliseconds: 1200)),
               ),

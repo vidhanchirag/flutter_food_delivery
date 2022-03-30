@@ -1,7 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:food_delivery/screens/PhoneNumberVerify/PhoneNumberVerify.dart';
 import 'package:food_delivery/screens/signin/SignIn_Screen.dart';
-import 'package:food_delivery/screens/phonenumber/PhoneVerify.dart';
 import 'package:food_delivery/utils/AppColors.dart';
 import 'package:food_delivery/utils/AppConstant.dart';
 import 'package:food_delivery/utils/Appconfig.dart';
@@ -172,6 +173,10 @@ class _SignUpState extends State<SignUp> {
                         keyboardType: TextInputType.emailAddress,
                         textInputAction: TextInputAction.next,
                         controller: _emailControlled,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.deny(RegExp(r' ')),
+                        ],
+                       // inputFormatters: [WhitelistingTextInputFormatter(RegExp(r'[a-zA-Z0-9]'))],
                         style: TextStyle(
                           color: AppColors.font_light_gray,
                           fontSize: 16.0,
@@ -216,7 +221,11 @@ class _SignUpState extends State<SignUp> {
                         keyboardType: TextInputType.phone,
                         textInputAction: TextInputAction.next,
                         controller: _phoneNumberControlled,
-                        maxLength: 10,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.deny(RegExp(r' ')),
+                        ],
+                        //inputFormatters: [WhitelistingTextInputFormatter(RegExp(r'[a-zA-Z0-9]'))],
+                        maxLength: 13,
                         style: TextStyle(
                           color: AppColors.font_light_gray,
                           fontSize: 16.0,
@@ -261,6 +270,10 @@ class _SignUpState extends State<SignUp> {
                         textInputAction: TextInputAction.next,
                         controller: _passwordControlled,
                         obscureText: _isObscure,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.deny(RegExp(r' ')),
+                        ],
+                       // inputFormatters: [WhitelistingTextInputFormatter(RegExp(r'^[a-zA-Z0-9_\-=@,$,#,%,&,*\.;]+'))],
                         style: TextStyle(
                           color: AppColors.font_light_gray,
                           fontSize: 16.0,
@@ -317,6 +330,7 @@ class _SignUpState extends State<SignUp> {
                         textInputAction: TextInputAction.done,
                         textAlign: TextAlign.left,
                         controller: _addressControlled,
+                       // inputFormatters: [WhitelistingTextInputFormatter.digitsOnly(RegExp(r'[a-zA-Z0-9,@,#,$,%,!]'))],
                         style: TextStyle(
                           color: AppColors.font_light_gray,
                           fontSize: 16.0,
@@ -447,24 +461,37 @@ class _SignUpState extends State<SignUp> {
       Map<String, dynamic> resposne = jsonDecode(response.body);
       if (resposne['success']) {
         Map<String, dynamic> user = resposne['user'];
-        initSharePref(true, user['id'], user['name'], user['email']);
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PhoneVerify()),);
+        initSharePref(true, user['id'], user['name'], user['email'],user['mobile_no']);
+        toastmsg.showToast("Your otp is: " + "${user['otp']}", context);
+        _nameControlled.clear();
+        _emailControlled.clear();
+        _passwordControlled.clear();
+        _phoneNumberControlled.clear();
+        _addressControlled.clear();
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PhoneNumberVerify()),);
       } else {
+        _nameControlled.clear();
+        _emailControlled.clear();
+        _passwordControlled.clear();
+        _phoneNumberControlled.clear();
+        _addressControlled.clear();
         scaffoldMessenger.showSnackBar(SnackBar(content: Text("${resposne['message']}"), backgroundColor: AppColors.red));
       }
-      scaffoldMessenger.showSnackBar(SnackBar(content: Text("${resposne['message']}"), backgroundColor: AppColors.snak_bg_color));
+
+     // scaffoldMessenger.showSnackBar(SnackBar(content: Text("${resposne['message']}"), backgroundColor: AppColors.snak_bg_color));
     } else {
       scaffoldMessenger.showSnackBar(SnackBar(content: Text("Please try again!"), backgroundColor: AppColors.red));
     }
   }
 
   Future<void> initSharePref(
-      bool isLogin, int id, String name, String email) async {
+      bool isLogin, int id, String name, String email,String phone) async {
     prefs = await SharedPreferences.getInstance();
     if (isLogin) {
       prefs.setInt(Appconfig.userid, id);
       prefs.setString(Appconfig.name, name);
       prefs.setString(Appconfig.email, email);
+      prefs.setString(Appconfig.phone, phone);
       prefs.setBool(Appconfig.is_login, true);
     }
   }

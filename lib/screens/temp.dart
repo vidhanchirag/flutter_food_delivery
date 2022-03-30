@@ -1,4 +1,3 @@
-/*
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
@@ -76,6 +75,7 @@ class _HomeFragmentState extends State<HomeFragment> {
     return Scaffold(
       backgroundColor: AppColors.White,
       body: SingleChildScrollView(
+
         child: Column(
           children: [
             Container(
@@ -140,11 +140,10 @@ class _HomeFragmentState extends State<HomeFragment> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    */
-/* Navigator.pushReplacement(
+ Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context) => FilterScreen()),
-                    );*//*
+                    );
 
                   },
                   child: Container(
@@ -163,9 +162,8 @@ class _HomeFragmentState extends State<HomeFragment> {
               ],
             ),
             Material(
-              */
-/* elevation: 1.0,
-              shadowColor: AppColors.shadow_color,*//*
+      elevation: 1.0,
+              shadowColor: AppColors.shadow_color,
 
               child: Container(
                 color: AppColors.White,
@@ -187,34 +185,6 @@ class _HomeFragmentState extends State<HomeFragment> {
             Padding(
               padding: const EdgeInsets.only(top: 20),
               child: Container(
-                */
-/* child: ImageSlideshow(
-                  width: double.infinity,
-                  height: 188,
-                  initialPage: 0,
-                  indicatorColor: Colors.blue,
-                  indicatorBackgroundColor: Colors.grey,
-                  onPageChanged: (value) {
-                    debugPrint('Page changed: $value');
-                  },
-                  autoPlayInterval: 3000,
-                  isLoop: true,
-                  children: [
-                    Image.asset(
-                      'assets/home_slider_image.png',
-                      fit: BoxFit.fill,
-                    ),
-                    Image.asset(
-                      'assets/home_slider_image.png',
-                      fit: BoxFit.fill,
-                    ),
-                    Image.asset(
-                      'assets/home_slider_image.png',
-                      fit: BoxFit.fill,
-                    ),
-                  ],
-                ),
-                *//*
 
                 child: Column(
                   children: [
@@ -323,16 +293,16 @@ class _HomeFragmentState extends State<HomeFragment> {
             Container(
               margin:
               EdgeInsets.only(left: 15, top: 0, right: 5, bottom: 10),
-               child: StaggeredGridView.countBuilder(
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 8,
-                  crossAxisCount: 2,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  primary: false,
-                  physics: ScrollPhysics(),
-                  itemCount: listImages.length,
-                  itemBuilder: (context, index) {
+              child:  GridView.count(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10.0,
+                mainAxisSpacing: 10.0,
+                shrinkWrap: true,
+                physics: ScrollPhysics(),
+                scrollDirection: Axis.vertical,
+                children: List.generate(
+                  10,
+                      (index) {
                     return Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(12)),
@@ -343,12 +313,17 @@ class _HomeFragmentState extends State<HomeFragment> {
                           Expanded(
                             child: Stack(
                               children: [
-                                ClipRRect(borderRadius: BorderRadius.all(Radius.circular(12)),
-                                  child: FadeInImage.memoryNetwork(
+                                Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: ClipRRect(
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(12)),
+                                    child: FadeInImage.memoryNetwork(
                                       // placeholder: kTransparentImage,
-                                      placeholder: kTransparentImage,
-                                      image: listImages[index],
-                                      fit: BoxFit.cover),
+                                        placeholder: kTransparentImage,
+                                        image: listImages[index],
+                                        fit: BoxFit.fill),
+                                  ),
                                 ),
                                 Opacity(
                                   opacity: 0.25,
@@ -359,15 +334,15 @@ class _HomeFragmentState extends State<HomeFragment> {
                                   child: Center(
                                     child: Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      CrossAxisAlignment.center,
                                       mainAxisSize: MainAxisSize.max,
                                       mainAxisAlignment:
-                                          MainAxisAlignment.end,
+                                      MainAxisAlignment.end,
                                       children: [
                                         Padding(
                                           padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  7, 0, 15, 10),
+                                          const EdgeInsets.fromLTRB(
+                                              7, 0, 15, 10),
                                           child: Row(
                                             children: [
                                               Expanded(
@@ -382,9 +357,9 @@ class _HomeFragmentState extends State<HomeFragment> {
                                                       ),
                                                       Padding(
                                                         padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 10),
+                                                        const EdgeInsets
+                                                            .only(
+                                                            left: 10),
                                                         child: Text(
                                                           '25min',
                                                           style: TextStyle(
@@ -392,7 +367,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                                                                 .White,
                                                             fontSize: 12.0,
                                                             fontFamily:
-                                                                'Poppins Regular',
+                                                            'Poppins Regular',
                                                           ),
                                                         ),
                                                       ),
@@ -404,8 +379,8 @@ class _HomeFragmentState extends State<HomeFragment> {
                                                 flex: 4,
                                                 child: Row(
                                                   mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .center,
+                                                  MainAxisAlignment
+                                                      .center,
                                                   children: [
                                                     Container(),
                                                   ],
@@ -416,8 +391,8 @@ class _HomeFragmentState extends State<HomeFragment> {
                                         ),
                                         Padding(
                                           padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  10, 0, 15, 20),
+                                          const EdgeInsets.fromLTRB(
+                                              10, 0, 15, 20),
                                           child: Row(
                                             children: [
                                               Expanded(
@@ -425,8 +400,8 @@ class _HomeFragmentState extends State<HomeFragment> {
                                                 child: Center(
                                                   child: Row(
                                                     mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .start,
+                                                    MainAxisAlignment
+                                                        .start,
                                                     children: [
                                                       Image.asset(
                                                         'assets/doller.png',
@@ -435,9 +410,9 @@ class _HomeFragmentState extends State<HomeFragment> {
                                                       ),
                                                       Padding(
                                                         padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 10),
+                                                        const EdgeInsets
+                                                            .only(
+                                                            left: 10),
                                                         child: Text(
                                                           'Free',
                                                           style: TextStyle(
@@ -445,7 +420,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                                                                 .White,
                                                             fontSize: 12.0,
                                                             fontFamily:
-                                                                'Poppins Regular',
+                                                            'Poppins Regular',
                                                           ),
                                                         ),
                                                       ),
@@ -457,42 +432,42 @@ class _HomeFragmentState extends State<HomeFragment> {
                                                 flex: 4,
                                                 child: Padding(
                                                   padding:
-                                                      const EdgeInsets.only(
-                                                          right: 5),
+                                                  const EdgeInsets.only(
+                                                      right: 5),
                                                   child: Row(
                                                     mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
+                                                    MainAxisAlignment
+                                                        .center,
                                                     children: [
                                                       Card(
                                                         color: AppColors
                                                             .font_green,
                                                         shape: RoundedRectangleBorder(
                                                             borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5)),
+                                                            BorderRadius
+                                                                .circular(
+                                                                5)),
                                                         child: Padding(
                                                           padding:
-                                                              const EdgeInsets
-                                                                      .fromLTRB(
-                                                                  10,
-                                                                  1,
-                                                                  10,
-                                                                  1),
+                                                          const EdgeInsets
+                                                              .fromLTRB(
+                                                              10,
+                                                              1,
+                                                              10,
+                                                              1),
                                                           child: Text(
                                                             '4.5',
                                                             style:
-                                                                TextStyle(
+                                                            TextStyle(
                                                               letterSpacing:
-                                                                  1.0,
+                                                              1.0,
                                                               color:
-                                                                  AppColors
-                                                                      .White,
+                                                              AppColors
+                                                                  .White,
                                                               fontSize:
-                                                                  12.0,
+                                                              12.0,
                                                               fontFamily:
-                                                                  'Poppins Regular',
+                                                              'Poppins Regular',
                                                             ),
                                                           ),
                                                         ),
@@ -513,20 +488,20 @@ class _HomeFragmentState extends State<HomeFragment> {
                           ),
                           Padding(
                             padding:
-                                const EdgeInsets.only(left: 12, top: 5),
+                            const EdgeInsets.only(left: 12, top: 5),
                             child: Expanded(
                                 child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "McDonald's",
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 20,
-                                  fontFamily: 'Poppins Medium',
-                                ),
-                              ),
-                            )),
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "McDonald's",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      color: AppColors.black,
+                                      fontSize: 20,
+                                      fontFamily: 'Poppins Medium',
+                                    ),
+                                  ),
+                                )),
                           ),
                           Align(
                             alignment: Alignment.centerLeft,
@@ -544,10 +519,8 @@ class _HomeFragmentState extends State<HomeFragment> {
                       ),
                     );
                   },
-                  staggeredTileBuilder: (index) {
-                    return StaggeredTile.count(1, index.isEven ? 1.4 : 1.6);
-                  }),
-
+                ),
+              ),
             ),
 
 
@@ -572,4 +545,3 @@ class MyGradientWidget extends StatelessWidget {
     );
   }
 }
-*/
