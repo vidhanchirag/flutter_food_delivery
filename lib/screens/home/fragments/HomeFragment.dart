@@ -1,17 +1,21 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:food_delivery/screens/home/FliterScreen.dart';
-import 'package:food_delivery/screens/introscreen/SliderModel.dart';
 import 'package:food_delivery/screens/singlerestaurant/SingleRestaurantScreen.dart';
 import 'package:food_delivery/utils/AppColors.dart';
 import 'package:food_delivery/utils/AppConstant.dart';
 import 'package:food_delivery/utils/ToastMsg.dart';
 import 'package:food_delivery/utils/lodingindicator.dart';
-import 'package:transparent_image/transparent_image.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import '../../../Models/HomeScreenModels/HomeModelResponse.dart';
+import '../../../Models/HomeScreenModels/HomeSliderModel.dart';
+import '../../../Models/HomeScreenModels/RestuarntlistModel.dart';
+import '../../../utils/Appconfig.dart';
+import '../../../utils/constant.dart';
+import 'package:shimmer/shimmer.dart';
 
 class HomeFragment extends StatefulWidget {
   const HomeFragment({Key? key}) : super(key: key);
@@ -22,30 +26,15 @@ class HomeFragment extends StatefulWidget {
 
 class _HomeFragmentState extends State<HomeFragment> {
   bool isLoading = false;
+  bool is_show_list = false;
+  bool is_loader = true;
+  bool isNatioanl_label_txt = false;
   final toastmsg = ToastMsg();
 
-  List<String> listImages = [
-    "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1681&q=80",
-    "https://images.unsplash.com/photo-1529042410759-befb1204b468?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80",
-    "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=780&q=80",
-    "https://images.unsplash.com/photo-1561758033-7e924f619b47?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-    "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1681&q=80",
-    "https://images.unsplash.com/photo-1529042410759-befb1204b468?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80",
-    "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=780&q=80",
-    "https://images.unsplash.com/photo-1561758033-7e924f619b47?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-    "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1681&q=80",
-    "https://images.unsplash.com/photo-1529042410759-befb1204b468?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80",
-    "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=780&q=80",
-    "https://images.unsplash.com/photo-1561758033-7e924f619b47?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-  ];
+  List<RestaurantsModel> listImages = [];
 
-  List<String> listSliderImages = [
-    "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1681&q=80",
-    "https://images.unsplash.com/photo-1529042410759-befb1204b468?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80",
-    "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=780&q=80",
-  ];
+  List<HomeSliderModel> listSliderImages = [];
 
-  List<SliderModel> slides = <SliderModel>[];
   int currentIndex = 0;
   late PageController _controller;
 
@@ -58,12 +47,16 @@ class _HomeFragmentState extends State<HomeFragment> {
     'Vadodara',
   ];
 
+  late List data;
+  late ScaffoldMessengerState scaffoldMessenger;
+  String location = '', Address = '', city = "", latitude = "", longitude = "";
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _controller = PageController(initialPage: 0);
-    slides = getSlides();
+
     GetPermissrion();
   }
 
@@ -88,9 +81,6 @@ class _HomeFragmentState extends State<HomeFragment> {
       isLoading = true;
     });
   }
-
-  String location = '';
-  String Address = '';
 
   Future<Position> _getGeoLocationPosition() async {
     bool serviceEnabled;
@@ -135,34 +125,135 @@ class _HomeFragmentState extends State<HomeFragment> {
     Address =
         '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
     location = '${place.subLocality}';
-    print(Address);
-    print(location);
-    setState(() {});
+    city = '${place.locality}';
+    //  print(Address);
+    // print(location);
   }
 
   GetPermissrion() async {
     Position position = await _getGeoLocationPosition();
     // location = 'Lat: ${position.latitude} , Long: ${position.longitude}';
-    // print(location);
+
     GetAddressFromLatLong(position);
+    setState(() {
+      latitude = '${position.latitude}';
+      longitude = '${position.longitude}';
+      print("latitude: " + latitude);
+      print("longitude: " + longitude);
+      Constant.isInternetAvailable().then((IsConnected) async {
+        if (IsConnected) {
+          //onLoaderShow();
+
+          get_home_page_data();
+        } else {
+          toastmsg.showToast(Appconfig.network_error, context);
+        }
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    scaffoldMessenger = ScaffoldMessenger.of(context);
     return Scaffold(
       backgroundColor: AppColors.White,
-      body: Center(
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    // physics: NeverScrollableScrollPhysics(),
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Stack(
+                children: [
+                  Visibility(
+                    visible: is_loader,
+                    child: Shimmer.fromColors(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 10.0, right: 10, top: 50, bottom: 0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 48.0,
+                                    height: 48.0,
+                                    color: Colors.white,
+                                  ),
+                                  Expanded(
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(left: 10.0),
+                                      child: Container(
+                                        width: double.infinity,
+                                        height: 40.0,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 20.0),
+                                child: Container(
+                                  width: double.infinity,
+                                  height: 185.0,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 20.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      width: 150.0,
+                                      height: 48.0,
+                                      color: Colors.white,
+                                    ),
+                                    Container(
+                                      width: 100.0,
+                                      height: 48.0,
+                                      color: Colors.white,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 20.0),
+                                child: GridView.builder(
+                                  padding: EdgeInsets.zero,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                  ),
+                                  itemCount: 6,
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 5.0, right: 5, top: 10),
+                                      child: Container(
+                                        height: 220,
+                                        color: AppColors.gray_350,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        direction: ShimmerDirection.ltr,
+                        baseColor: AppColors.gray_200,
+                        highlightColor: AppColors.gray_350),
+                  ),
+                  Visibility(
+                    visible: is_show_list,
                     child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 10.0, right: 10, top: 50, bottom: 0),
+                      padding: const EdgeInsets.only(left: 10.0, right: 10, top: 50, bottom: 0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -215,7 +306,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                                         enableInfiniteScroll: true,
                                         reverse: false,
                                         autoPlay: true,
-                                        pageSnapping: true,
+                                        // pageSnapping: true,
                                         autoPlayInterval: Duration(seconds: 3),
                                         autoPlayAnimationDuration:
                                             Duration(milliseconds: 1500),
@@ -244,7 +335,8 @@ class _HomeFragmentState extends State<HomeFragment> {
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(15),
-                                                        child: Image.network(i,
+                                                        child: Image.network(
+                                                            i.image_url,
                                                             fit: BoxFit.cover,
                                                             width: 1000))),
                                               ],
@@ -279,189 +371,348 @@ class _HomeFragmentState extends State<HomeFragment> {
                               }).toList(),
                             ),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.only(
-                                    left: 15.0, top: 20.0, right: 0.0),
-                                child: Align(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    AppConstant.TXT_National_Favoriteso,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: AppColors.black,
-                                      fontSize: 24.0,
-                                      fontFamily: 'Poppins SemiBold',
+                          Visibility(
+                            visible: isNatioanl_label_txt,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.only(
+                                      left: 15.0, top: 20.0, right: 0.0),
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      AppConstant.TXT_National_Favoriteso,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: AppColors.black,
+                                        fontSize: 24.0,
+                                        fontFamily: 'Poppins SemiBold',
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            SingleRestaurantScreen()),
-                                  );
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.only(top: 10, right: 20),
-                                  child: Text(
-                                    'See all',
-                                    textAlign: TextAlign.right,
-                                    style: TextStyle(
-                                      color: AppColors.red,
-                                      fontSize: 16.0,
-                                      fontFamily: 'Poppins Regular',
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              SingleRestaurantScreen()),
+                                    );
+                                  },
+                                  child: Container(
+                                    padding:
+                                        EdgeInsets.only(top: 10, right: 20),
+                                    child: Text(
+                                      'See all',
+                                      textAlign: TextAlign.right,
+                                      style: TextStyle(
+                                        color: AppColors.red,
+                                        fontSize: 16.0,
+                                        fontFamily: 'Poppins Regular',
+                                      ),
                                     ),
                                   ),
-                                ),
-                              )
-                            ],
+                                )
+                              ],
+                            ),
                           ),
-                          Container(
-                            color: AppColors.White,
-                            child: GridView.count(
-                              crossAxisCount: 2,
-                              shrinkWrap: true,
-
-                              //physics: ScrollPhysics(),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 20.0),
+                            child: GridView.builder(
+                              padding: EdgeInsets.zero,
                               physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
                               scrollDirection: Axis.vertical,
-                              children: List.generate(10, (index) {return Container(decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(12)), color: Colors.transparent,),
-                                    child: Column(
-                                      children: [
-                                        Expanded(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(5.0),
-                                            child: Stack(
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Expanded(
-                                                      child: ClipRRect(
-                                                        borderRadius: BorderRadius.all(Radius.circular(12)),
-                                                        child: FadeInImage
-                                                            .memoryNetwork(
-                                                                // placeholder: kTransparentImage,
-                                                                placeholder: kTransparentImage,
-                                                                image: listImages[index],
-                                                                fit: BoxFit.fill),
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                              ),
+                              itemCount: listImages.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  color: Colors.white,
+                                  child: Column(
+                                    children: [
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(5.0,),
+                                          child: Stack(
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: SizedBox(
+                                                      width: 185,
+                                                      height: 350,
+                                                      child: Image.network(
+                                                        listImages[index]
+                                                            .image_url,
+
+                                                        fit: BoxFit.cover,
                                                       ),
                                                     ),
-                                                  ],
-                                                ),
-                                                Opacity(
-                                                  opacity: 0.25,
-                                                  child: Container(
-                                                    color: AppColors.black,
+                                                    /* child: Container(
 
+                                                        decoration:  BoxDecoration(
+                                                          image:  DecorationImage(
+                                                              image:  NetworkImage(listImages[index].image_url,),
+
+                                                              fit: BoxFit.cover,),
+                                                        ),
+                                                      ),*/
                                                   ),
-                                                 // child: MyGradientWidget(),
+                                                ],
+                                              ),
+                                              Opacity(
+                                                opacity: 0.25,
+                                                child: Container(
+                                                  color: AppColors.black,
                                                 ),
-                                                Container(
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
-                                                    child: Column(
-                                                     mainAxisAlignment: MainAxisAlignment.end,
-                                                      children: [
-                                                        Row(
-                                                          children: [
-                                                            Image.asset('assets/fast_delivery.png', height: 25, width: 25,),
-                                                            Padding(
-                                                              padding: const EdgeInsets.only(left: 10.0),
+                                                // child: MyGradientWidget(),
+                                              ),
+                                              Container(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 10.0,
+                                                          right: 10,
+                                                          bottom: 10),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          Image.asset(
+                                                            'assets/fast_delivery.png',
+                                                            height: 25,
+                                                            width: 25,
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left:
+                                                                        10.0),
+                                                            child: Text(
+                                                              '25min',
+                                                              style:
+                                                                  TextStyle(
+                                                                color:
+                                                                    AppColors
+                                                                        .White,
+                                                                fontSize:
+                                                                    12.0,
+                                                                fontFamily:
+                                                                    'Poppins Regular',
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Row(
+                                                            children: [
+                                                              Image.asset(
+                                                                'assets/doller.png',
+                                                                height: 20,
+                                                                width: 20,
+                                                              ),
+                                                              Padding(
+                                                                padding: const EdgeInsets
+                                                                        .only(
+                                                                    left:
+                                                                        15.0),
+                                                                child: Text(
+                                                                  listImages[
+                                                                          index]
+                                                                      .delivery_type,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: AppColors
+                                                                        .White,
+                                                                    fontSize:
+                                                                        12.0,
+                                                                    fontFamily:
+                                                                        'Poppins Regular',
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          Card(
+                                                            color: AppColors
+                                                                .font_green,
+                                                            shape: RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            5)),
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .fromLTRB(
+                                                                      10,
+                                                                      1,
+                                                                      10,
+                                                                      1),
                                                               child: Text(
-                                                                '25min',
-                                                                style: TextStyle(
-                                                                  color: AppColors.White,
-                                                                  fontSize: 12.0,
-                                                                  fontFamily: 'Poppins Regular',
+                                                                listImages[index].given_stars,
+                                                                style:
+                                                                    TextStyle(
+                                                                  letterSpacing:
+                                                                      1.0,
+                                                                  color: AppColors
+                                                                      .White,
+                                                                  fontSize:
+                                                                      12.0,
+                                                                  fontFamily:
+                                                                      'Poppins Regular',
                                                                 ),
                                                               ),
                                                             ),
-
-                                                          ],
-                                                        ),
-                                                        Row(
-                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                          children: [
-                                                            Row(
-                                                              children: [
-                                                                Image.asset('assets/doller.png', height: 20, width: 20,),
-                                                                Padding(
-                                                                  padding: const EdgeInsets.only(left: 15.0),
-                                                                  child: Text(
-                                                                    'Free',
-                                                                    style: TextStyle(
-                                                                      color: AppColors.White,
-                                                                      fontSize: 12.0,
-                                                                      fontFamily: 'Poppins Regular',
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            Card(
-                                                              color: AppColors.font_green,
-                                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.fromLTRB(10, 1, 10, 1),
-                                                                child: Text('4.5',
-                                                                  style: TextStyle(
-                                                                    letterSpacing: 1.0,
-                                                                    color: AppColors.White,
-                                                                    fontSize: 12.0,
-                                                                    fontFamily: 'Poppins Regular',
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
-                                              ],
-                                            ),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ),
+                                      ),
+                                      Text(
+                                        listImages[index].restaurant_name,
+                                        style: TextStyle(
+                                          color: AppColors.black,
+                                          fontSize: 18.0,
+                                          fontFamily: 'Poppins Medium',
+                                        ),
+                                      ),
+                                      Text(
+                                        listImages[index].restaurant_type,
+                                        style: TextStyle(
+                                          color: AppColors.font_light_gray,
+                                          fontSize: 14.0,
+                                          fontFamily: 'Poppins Medium',
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         ],
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-            Visibility(visible: isLoading, child: LoadingIndicator.isLoding()),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
-}
 
-class MyGradientWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.center,
-          end: Alignment.center,
-          colors: [Colors.black, Colors.black],
-        ),
-      ),
-    );
+  /* Future get_home_page_data() async {
+    await http
+        .get(
+      Uri.parse(Appconfig.get_home_page_data),
+    )
+        .then((it) {
+      if (it.statusCode == 200) {
+        //  onLoaderDismiss();
+        var response = HomeModelResponse.fromjson(json.decode(it.body));
+        print(response);
+
+        if (response.success == "true") {
+          // onLoaderDismiss();
+          if (isNatioanl_label_txt == false) {
+            isNatioanl_label_txt = true;
+          }
+          if (is_loader == true) {
+            is_loader=false;
+            is_show_list=true;
+            setState(() {
+              is_loader;
+               is_show_list;
+            });
+          }
+
+          print(response.msg);
+
+          listImages = response.data.list_restaurants;
+          listSliderImages = response.data.list_slider_images;
+        } else {
+          isNatioanl_label_txt = true;
+          // is_show_list=false;
+          // onLoaderDismiss();
+        }
+      } else {
+        isNatioanl_label_txt = true;
+        // is_show_list=false;
+        // onLoaderDismiss();
+      }
+    }).catchError((e) {
+      print(e.toString());
+    });
+  }
+  */
+
+  Future get_home_page_data() async {
+    Map _params = {
+      'radius': '10',
+      'latitude': '$latitude',
+      'longitude': '$longitude'
+    };
+    print(_params);
+    await http
+        .post(
+      Uri.parse(Appconfig.get_home_page_data),
+      body: _params,
+    )
+        .then((it) {
+      if (it.statusCode == 200) {
+        var response = HomeModelResponse.fromjson(json.decode(it.body));
+        print(response);
+        onLoaderDismiss();
+        if (response.success == "true") {
+          if (isNatioanl_label_txt == false) {
+            isNatioanl_label_txt = true;
+          }
+          if (is_loader == true) {
+            is_loader = false;
+            is_show_list = true;
+            setState(() {
+              is_loader;
+              is_show_list;
+            });
+          }
+
+          print(response.msg);
+
+          listImages = response.data.list_restaurants;
+          listSliderImages = response.data.list_slider_images;
+        } else {
+          scaffoldMessenger.showSnackBar(SnackBar(
+              content: Text("${response.msg}"),
+              backgroundColor: AppColors.red));
+        }
+      } else {
+        onLoaderDismiss();
+      }
+    }).catchError((e) {
+      onLoaderDismiss();
+      print(e.toString());
+    });
   }
 }

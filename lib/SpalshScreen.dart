@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/screens/Address/AddresslistScreen.dart';
 import 'package:food_delivery/screens/home/HomeScreen.dart';
 import 'package:food_delivery/screens/introscreen/OnBoardingScreen.dart';
 import 'package:food_delivery/utils/Appconfig.dart';
 import 'utils/AppColors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 class SplashScreen extends StatefulWidget {
   @override
   _SplashScreenState createState() => _SplashScreenState();

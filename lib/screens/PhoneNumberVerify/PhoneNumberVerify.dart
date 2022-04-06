@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:food_delivery/screens/Address/AddresslistScreen.dart';
 import 'package:food_delivery/screens/home/HomeScreen.dart';
 import 'package:food_delivery/screens/signup/SignUp.dart';
 import 'package:food_delivery/utils/AppColors.dart';
@@ -483,7 +484,7 @@ class _PhoneNumberVerifyState extends State<PhoneNumberVerify> {
         Map<String, dynamic> data = resposne['data'];
         toastmsg.showToast("Your otp is: " + "${data['otp']}", context);
         print(" ${data['otp']}");
-        //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> PhoneVerify()),);
+       // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> AddresslistScreen()),);
       } else {
         scaffoldMessenger.showSnackBar(SnackBar(
             content: Text("${resposne['message']}"),
@@ -515,7 +516,7 @@ class _PhoneNumberVerifyState extends State<PhoneNumberVerify> {
         otp_controller_2.clear();
         otp_controller_3.clear();
         otp_controller_4.clear();
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> HomeScreen()),);
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> AddresslistScreen()),);
       } else {
         otp_controller_1.clear();
         otp_controller_2.clear();

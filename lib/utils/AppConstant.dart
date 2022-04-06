@@ -114,6 +114,16 @@ class AppConstant {
   static const String TXT_Delivery_Too = "Delivery To";
   static const String TXT_National_Favoriteso = "National Favorites";
 
+  /******************************** Add Address ******************************/
+  static const String Add_Address_1_error = "Please enter address 1.";
+  static const String Add_Address_2_error = "Please enter address 2.";
+  static const String Add_Landmark_error = "Please enter landmark.";
+  static const String Add_Mobile_error = "Please enter mobile number.";
+  static const String Add_City_error = "Please enter city.";
+  static const String Add_Zipcode_error = "Please enter zip code.";
+  static const String Add_State_error = "Please enter state.";
+  static const String Add_Country_error = "Please enter country.";
+  static  String Add_Address_txt = "Add Address.";
 
   static const double TabButtonHeight = 80;
   static const double TabButtonTextSize = 20;

@@ -14,6 +14,14 @@ class Constant {
       return true;
     }
   }
-
-  
+  static int id=0;
+  static String address_1="";
+  static String address_2="";
+  static String landmark="";
+  static String  Mobile_number="";
+  static String City="";
+  static String zipcode="";
+  static String state="";
+  static String country="";
+  static String check_flow="";
 }

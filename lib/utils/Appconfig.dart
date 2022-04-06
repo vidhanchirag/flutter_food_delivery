@@ -12,6 +12,11 @@ class Appconfig {
   static String forgot_password = URL_MAIN +'forgot_password';
   static String verify_otp = URL_MAIN +'verify-otp';
   static String change_password = URL_MAIN +'change-password';
+  static String get_home_page_data = URL_MAIN +'get_home_page_data';
+  static String add_address = URL_MAIN +'add_address';
+  static String List_address = URL_MAIN +'address_list';
+  static String address_delete = URL_MAIN +'address_delete';
+  static String address_update = URL_MAIN +'address_update';
 
 
 

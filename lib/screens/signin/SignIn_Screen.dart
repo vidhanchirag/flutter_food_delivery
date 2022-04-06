@@ -16,7 +16,6 @@ import 'package:food_delivery/utils/lodingindicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
-
 class SignIn_Screen extends StatefulWidget {
   const SignIn_Screen({Key? key}) : super(key: key);
 
@@ -34,8 +33,6 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
 
   late SharedPreferences prefs;
 
-
-
   late ScaffoldMessengerState scaffoldMessenger;
 
   @override
@@ -51,13 +48,14 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
             color: AppColors.font_red,
             fontSize: 21.0,
             fontFamily: 'Poppins SemiBold',
-
           ),
         ),
         backgroundColor: AppColors.PageBackgroundcolor,
         leading: InkWell(
           onTap: () {
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> OnBoardingScreen()),
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => OnBoardingScreen()),
             );
           },
           child: Icon(
@@ -70,11 +68,12 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
         child: Stack(
           fit: StackFit.expand,
           children: [
-             SingleChildScrollView(
-               child: Column(
+            SingleChildScrollView(
+              child: Column(
                 children: [
                   Container(
-                    padding: EdgeInsets.only(left: 20.0,top: 50.0,right: 20.0),
+                    padding:
+                        EdgeInsets.only(left: 20.0, top: 50.0, right: 20.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -89,7 +88,8 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.only(left: 20.0,top: 30.0,right: 20.0),
+                    padding:
+                        EdgeInsets.only(left: 20.0, top: 30.0, right: 20.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: RichText(
@@ -105,10 +105,14 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
                           ),
                           TextSpan(
                               text: AppConstant.SignIn_create_new_TXT,
-                              recognizer: new TapGestureRecognizer()..onTap = (){
-                                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> SignUp()),
-                              );
-                              },
+                              recognizer: new TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SignUp()),
+                                  );
+                                },
                               style: TextStyle(
                                 color: AppColors.font_green,
                                 fontFamily: 'Poppins Bold',
@@ -120,7 +124,8 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
                   ),
                   Container(
                     color: AppColors.input_color,
-                    padding: EdgeInsets.only(left: 20.0,top: 30.0,right: 20.0),
+                    padding:
+                        EdgeInsets.only(left: 20.0, top: 30.0, right: 20.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: TextFormField(
@@ -129,7 +134,6 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
                         textInputAction: TextInputAction.next,
                         maxLength: 13,
                         controller: _PhoneControlled,
-
                         style: TextStyle(
                           color: AppColors.font_light_gray,
                           fontSize: 16.0,
@@ -137,9 +141,11 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
                         ),
                         decoration: InputDecoration(
                           labelText: 'Phone Number',
-                          labelStyle: TextStyle(color: AppColors.font_light_gray),
+                          labelStyle:
+                              TextStyle(color: AppColors.font_light_gray),
                           //hintText: AppConstant.Email_TXT,
-                          suffixIcon: Icon(Icons.phone_android, color: AppColors.red),
+                          suffixIcon:
+                              Icon(Icons.phone_android, color: AppColors.red),
 
                           //  hintStyle: TextStyle(color: Colors.white),
                           errorStyle: TextStyle(
@@ -147,11 +153,13 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
                             fontSize: 15.0,
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: AppColors.box_border,width: 1.0),
+                            borderSide: BorderSide(
+                                color: AppColors.box_border, width: 1.0),
                             borderRadius: BorderRadius.circular(6.0),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: AppColors.box_border, width: 1.0),
+                            borderSide: BorderSide(
+                                color: AppColors.box_border, width: 1.0),
                             borderRadius: BorderRadius.circular(6.0),
                           ),
 
@@ -163,7 +171,8 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
                   ),
                   Container(
                     color: AppColors.input_color,
-                    padding: EdgeInsets.only(left: 20.0,top: 30.0,right: 20.0),
+                    padding:
+                        EdgeInsets.only(left: 20.0, top: 30.0, right: 20.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: TextFormField(
@@ -175,7 +184,7 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
                         inputFormatters: [
                           FilteringTextInputFormatter.deny(RegExp(r' ')),
                         ],
-                      //  inputFormatters: [WhitelistingTextInputFormatter(RegExp(r'^[a-zA-Z0-9_\-=@,$,#,%,&,*\.;]+'))],
+                        //  inputFormatters: [WhitelistingTextInputFormatter(RegExp(r'^[a-zA-Z0-9_\-=@,$,#,%,&,*\.;]+'))],
                         style: TextStyle(
                           color: AppColors.font_light_gray,
                           fontSize: 16.0,
@@ -183,7 +192,8 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
                         ),
                         decoration: InputDecoration(
                           labelText: AppConstant.Password_TXT,
-                          labelStyle: TextStyle(color: AppColors.font_light_gray),
+                          labelStyle:
+                              TextStyle(color: AppColors.font_light_gray),
                           // hintText: AppConstant.Password_TXT,
                           suffixIcon: IconButton(
                               icon: Icon(
@@ -202,11 +212,13 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
                             fontSize: 15.0,
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: AppColors.box_border,width: 1.0),
+                            borderSide: BorderSide(
+                                color: AppColors.box_border, width: 1.0),
                             borderRadius: BorderRadius.circular(6.0),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: AppColors.box_border, width: 1.0),
+                            borderSide: BorderSide(
+                                color: AppColors.box_border, width: 1.0),
                             borderRadius: BorderRadius.circular(6.0),
                           ),
                           /* border: OutlineInputBorder(
@@ -216,7 +228,8 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.only(left: 20.0,top: 30.0,right: 20.0),
+                    padding:
+                        EdgeInsets.only(left: 20.0, top: 30.0, right: 20.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: GestureDetector(
@@ -228,15 +241,19 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
                             fontFamily: 'Poppins Medium',
                           ),
                         ),
-                        onTap: (){
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> ForgotPassword()),
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ForgotPassword()),
                           );
                         },
                       ),
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.only(left: 30.0,top: 50.0,right: 30.0),
+                    padding:
+                        EdgeInsets.only(left: 30.0, top: 50.0, right: 30.0),
                     child: Align(
                       alignment: Alignment.center,
                       child: Container(
@@ -246,12 +263,11 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
                         child: ElevatedButton(
                           onPressed: () {
                             if (isValid()) {
-
-                               Constant.isInternetAvailable().then((IsConnected) async {
+                              Constant.isInternetAvailable()
+                                  .then((IsConnected) async {
                                 if (IsConnected) {
                                   onLoaderShow();
-                                  login(
-                                      _PhoneControlled.text.trim(),
+                                  login(_PhoneControlled.text.trim(),
                                       _passwordControlled.text.trim());
                                   FocusScope.of(context).unfocus();
                                 } else {
@@ -260,7 +276,6 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
                                 }
                               });
                             }
-
                           },
                           child: Text(
                             AppConstant.Sign_In_TXT.toUpperCase(),
@@ -278,13 +293,11 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
                       ),
                     ),
                   ),
-
                 ],
+              ),
             ),
-             ),
-           Visibility(visible: isLoading, child: LoadingIndicator.isLoding()),
+            Visibility(visible: isLoading, child: LoadingIndicator.isLoding()),
           ],
-
         ),
       ),
     );
@@ -313,15 +326,13 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
     } else if (_PhoneControlled.text.length < 10) {
       toastmsg.showToast(AppConstant.PhoneNumber_length_error, context);
       return false;
-    }  else if (_passwordControlled.text.length < 8) {
+    } else if (_passwordControlled.text.length < 8) {
       toastmsg.showToast(AppConstant.Password_length_error, context);
       return false;
     } else {
       return true;
     }
   }
-
-
 
 /*  getLoginApiData(String email, String password) async {
     Map _params = {
@@ -366,7 +377,6 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
   }
   */
 
-
   login(phone, password) async {
     Map data = {'mobile_no': phone, 'password': password};
     print(data.toString());
@@ -376,36 +386,39 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
           "Content-Type": "application/x-www-form-urlencoded"
         },
         body: data,
-        encoding: Encoding.getByName("utf-8")
-    );
+        encoding: Encoding.getByName("utf-8"));
     setState(() {
       isLoading = false;
     });
     if (response.statusCode == 200) {
-      Map<String, dynamic>resposne = jsonDecode(response.body);
+      Map<String, dynamic> resposne = jsonDecode(response.body);
       if (resposne['success']) {
-        Map<String, dynamic>user = resposne['user'];
-        initSharePref(true,user['id'], user['name'],user['email'],user['mobile_no']);
+        Map<String, dynamic> user = resposne['user'];
+        initSharePref(true, user['id'], user['name'], user['email'], user['mobile_no']);
         _PhoneControlled.clear();
         _passwordControlled.clear();
-        Navigator.of(context,rootNavigator: true).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
+        Navigator.of(context, rootNavigator: true).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
       } else {
         print(" ${resposne['message']}");
         _PhoneControlled.clear();
         _passwordControlled.clear();
-        scaffoldMessenger.showSnackBar(SnackBar(content: Text("${resposne['message']}"),backgroundColor: AppColors.red));
+        scaffoldMessenger.showSnackBar(SnackBar(
+            content: Text("${resposne['message']}"),
+            backgroundColor: AppColors.red));
       }
       _PhoneControlled.clear();
       _passwordControlled.clear();
-      scaffoldMessenger.showSnackBar(SnackBar(content: Text("${resposne['message']}"),backgroundColor: AppColors.snak_bg_color));
+
     } else {
       _PhoneControlled.clear();
       _passwordControlled.clear();
-      scaffoldMessenger.showSnackBar(SnackBar(content: Text("Please try again!"),backgroundColor: AppColors.red));
+      scaffoldMessenger.showSnackBar(SnackBar(
+          content: Text("Please try again!"), backgroundColor: AppColors.red));
     }
   }
 
-  Future<void> initSharePref(bool isLogin,int id,String name, String email,String phone) async {
+  Future<void> initSharePref(
+      bool isLogin, int id, String name, String email, String phone) async {
     prefs = await SharedPreferences.getInstance();
     if (isLogin) {
       prefs.setInt(Appconfig.userid, id);
@@ -414,7 +427,7 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
       prefs.setString(Appconfig.phone, phone);
       prefs.setBool(Appconfig.is_login, true);
       //prefs.setBool(Appconfig.ischecked, isChecked);
-      print("prefs "+"prefs");
+      print("prefs " + "prefs");
       /* if (isChecked == true) {
         prefs.setString(Appconfig.username, _emailControlled.text);
         prefs.setString(Appconfig.password, _passwordControlled.text);

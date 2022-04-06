@@ -35,4 +35,6 @@ class AppColors {
   static const light_color=Color(0xFF5C6560);
   static const shadow_color=Color(0xFF686868);
   static const snak_bg_color=Color(0xFF3CB371);
+  static const gray_200=Color(0xFFEEEEEE);
+  static const gray_350=Color(0xFFD6D6D6);
 }
