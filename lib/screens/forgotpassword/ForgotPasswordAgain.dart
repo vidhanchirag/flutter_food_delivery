@@ -18,6 +18,7 @@ class _ForgotPasswordAgainState extends State<ForgotPasswordAgain> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.PageBackgroundcolor,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
         title: Text(

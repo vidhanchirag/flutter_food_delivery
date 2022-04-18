@@ -24,4 +24,6 @@ class Constant {
   static String state="";
   static String country="";
   static String check_flow="";
+  static String latitude="";
+  static String longitude="";
 }

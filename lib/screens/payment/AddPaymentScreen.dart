@@ -20,6 +20,7 @@ class _AddPaymentScreenState extends State<AddPaymentScreen> {
     var formKey;
     return Scaffold(
       backgroundColor: AppColors.White,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
         title: Text(

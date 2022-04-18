@@ -21,6 +21,7 @@ class _AddToCartState extends State<AddToCart> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.White,
+      resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: Column(
           children: [

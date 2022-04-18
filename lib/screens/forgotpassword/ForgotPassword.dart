@@ -34,6 +34,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     scaffoldMessenger = ScaffoldMessenger.of(context);
     return Scaffold(
       backgroundColor: AppColors.PageBackgroundcolor,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
         title: Text(

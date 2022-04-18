@@ -37,6 +37,7 @@ class _SignUpState extends State<SignUp> {
     scaffoldMessenger = ScaffoldMessenger.of(context);
     return Scaffold(
       backgroundColor: AppColors.PageBackgroundcolor,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
         title: Text(

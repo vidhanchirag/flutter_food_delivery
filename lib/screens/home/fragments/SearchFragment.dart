@@ -110,107 +110,105 @@ class _SearchFragmentState extends State<SearchFragment> {
                child: Column(
                  children: [
 
-                   Expanded(
-                     child: SingleChildScrollView(
-                       child: Column(
-                         crossAxisAlignment: CrossAxisAlignment.start,
-                         children: [
+                   SingleChildScrollView(
+                     child: Column(
+                       crossAxisAlignment: CrossAxisAlignment.start,
+                       children: [
 
-                           Row(
-                             children: [
-                               Image.asset(
-                                 'assets/search.png',height: 35,width: 35,
-                               ),
-                               Text(
-                                 "Search",
-                                 style: TextStyle(
-                                   color: AppColors.black,
-                                   fontSize: 24.0,
-                                   fontFamily: 'Poppins SemiBold ',
-                                 ),
-                               ),
-                             ],
-                           ),
-                           Padding(
-                             padding: const EdgeInsets.only(top: 20.0,left: 5),
-                             child: Text(
-                               "Top Categories",
-                               textAlign: TextAlign.left,
+                         Row(
+                           children: [
+                             Image.asset(
+                               'assets/search.png',height: 35,width: 35,
+                             ),
+                             Text(
+                               "Search",
                                style: TextStyle(
                                  color: AppColors.black,
-                                 fontSize: 16.0,
-                                 fontFamily: 'Poppins Regular',
+                                 fontSize: 24.0,
+                                 fontFamily: 'Poppins SemiBold ',
                                ),
                              ),
+                           ],
+                         ),
+                         Padding(
+                           padding: const EdgeInsets.only(top: 20.0,left: 5),
+                           child: Text(
+                             "Top Categories",
+                             textAlign: TextAlign.left,
+                             style: TextStyle(
+                               color: AppColors.black,
+                               fontSize: 16.0,
+                               fontFamily: 'Poppins Regular',
+                             ),
                            ),
-                           Padding(
-                             padding: const EdgeInsets.only(top: 20.0,bottom: 20),
-                             child: Container(
-                               child: GridView.builder(
-                                   padding: EdgeInsets.zero,
-                                 physics: NeverScrollableScrollPhysics(),
-                                 shrinkWrap: true,
-                                 scrollDirection: Axis.vertical,
-                                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,
-                                 ),
-                                 itemCount: listImages.length,
-                                 itemBuilder: (context, index) {
-                                   return Container(
-                                     color: Colors.white,
-                                     child: Column(
-                                       children: [
-                                         Expanded(
-                                           child: Padding(
-                                             padding: const EdgeInsets.all(5.0),
-                                             child: Stack(
-                                               children: [
-                                                 Row(
-                                                   children: [
-                                                     Expanded(
-                                                       child: ClipRRect(
-                                                         borderRadius: BorderRadius.all(Radius.circular(12)),
-                                                         child: Container(
-                                                           decoration: new BoxDecoration(
-                                                             image: new DecorationImage(
-                                                                 image: new NetworkImage(listImages[index].image_url),
-                                                                 fit: BoxFit.cover),
-                                                           ),
+                         ),
+                         Padding(
+                           padding: const EdgeInsets.only(top: 20.0,bottom: 20),
+                           child: Container(
+                             child: GridView.builder(
+                                 padding: EdgeInsets.zero,
+                               physics: NeverScrollableScrollPhysics(),
+                               shrinkWrap: true,
+                               scrollDirection: Axis.vertical,
+                               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,
+                               ),
+                               itemCount: listImages.length,
+                               itemBuilder: (context, index) {
+                                 return Container(
+                                   color: Colors.white,
+                                   child: Column(
+                                     children: [
+                                       Expanded(
+                                         child: Padding(
+                                           padding: const EdgeInsets.all(5.0),
+                                           child: Stack(
+                                             children: [
+                                               Row(
+                                                 children: [
+                                                   Expanded(
+                                                     child: ClipRRect(
+                                                       borderRadius: BorderRadius.all(Radius.circular(12)),
+                                                       child: Container(
+                                                         decoration: new BoxDecoration(
+                                                           image: new DecorationImage(
+                                                               image: new NetworkImage(listImages[index].image_url),
+                                                               fit: BoxFit.cover),
                                                          ),
                                                        ),
                                                      ),
-                                                   ],
-                                                 ),
-                                                 Opacity(
-                                                   opacity: 0.25,
-                                                   child: Container(
-                                                     color: AppColors.black,
                                                    ),
-                                                   // child: MyGradientWidget(),
+                                                 ],
+                                               ),
+                                               Opacity(
+                                                 opacity: 0.25,
+                                                 child: Container(
+                                                   color: AppColors.black,
                                                  ),
-                                                 Align(
-                                                   alignment: Alignment.center,
-                                                   child: Text(
-                                                     listImages[index].restaurant_name,
-                                                     style: TextStyle(
-                                                       color: AppColors.White,
-                                                       fontSize: 16.0,
-                                                       fontFamily: 'Poppins SemiBold ',
-                                                     ),
+                                                 // child: MyGradientWidget(),
+                                               ),
+                                               Align(
+                                                 alignment: Alignment.center,
+                                                 child: Text(
+                                                   listImages[index].restaurant_name,
+                                                   style: TextStyle(
+                                                     color: AppColors.White,
+                                                     fontSize: 16.0,
+                                                     fontFamily: 'Poppins SemiBold ',
                                                    ),
                                                  ),
-                                               ],
-                                             ),
+                                               ),
+                                             ],
                                            ),
                                          ),
-                                       ],
-                                     ),
-                                   );
-                                 },
-                               ),
+                                       ),
+                                     ],
+                                   ),
+                                 );
+                               },
                              ),
                            ),
-                         ],
-                       ),
+                         ),
+                       ],
                      ),
                    ),
                  ],
@@ -253,20 +251,27 @@ class _SearchFragmentState extends State<SearchFragment> {
     });
   }
 
+
+
   Future get_home_page_data() async {
+    Map _params = {
+      'radius': '10',
+      'latitude': Constant.latitude,
+      'longitude': Constant.longitude
+    };
+    print(_params);
     await http
-        .get(
+        .post(
       Uri.parse(Appconfig.get_home_page_data),
+      body: _params,
     )
         .then((it) {
       if (it.statusCode == 200) {
-        //  onLoaderDismiss();
         var response = HomeModelResponse.fromjson(json.decode(it.body));
         print(response);
-
-        print(response.msg);
+        onLoaderDismiss();
         if (response.success == "true") {
-         // onLoaderDismiss();
+          // onLoaderDismiss();
           if (is_loader == true) {
             is_loader=false;
             is_show_list=true;
@@ -277,12 +282,13 @@ class _SearchFragmentState extends State<SearchFragment> {
           }
           listImages = response.data.list_restaurants;
         } else {
-         // onLoaderDismiss();
+          // onLoaderDismiss();
         }
       } else {
-        //onLoaderDismiss();
+        onLoaderDismiss();
       }
     }).catchError((e) {
+      onLoaderDismiss();
       print(e.toString());
     });
   }

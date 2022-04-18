@@ -16,6 +16,7 @@ class _FindRestaurantsScreenState extends State<FindRestaurantsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.PageBackgroundcolor,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
         title: Text(

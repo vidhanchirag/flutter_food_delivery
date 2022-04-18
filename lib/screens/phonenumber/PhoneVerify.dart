@@ -39,6 +39,7 @@ class _PhoneVerifyState extends State<PhoneVerify> {
     scaffoldMessenger = ScaffoldMessenger.of(context);
     return Scaffold(
       backgroundColor: AppColors.PageBackgroundcolor,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
         title: Text(

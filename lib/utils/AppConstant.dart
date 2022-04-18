@@ -62,11 +62,16 @@ class AppConstant {
   static const String email_error = "Please enter email address.";
   static const String email_valid_error = "Please enter valid email address.";
   static const String UserPassword_error = "Please enter password.";
+  static const String UserPasswordCureent_error = "Please enter current password.";
+  static const String UserPasswordNew_error = "Please enter new password.";
+  static const String UserPasswordConfrim_error = "Please enter confirm password.";
+  static const String UserPasswordMisMatched_error = "Enter password mismatched.";
   static const String PhoneNumber_error = "Please enter phone number.";
   static const String PhoneNumber_lenght_error = "Phone number must be at least 10 digits";
   static const String address_error = "Please enter address.";
   static const String Password_length_error = "Enter password 8+ characters.";
   static const String  PhoneNumber_length_error = "Enter 10+ digits as a phone number.";
+  static const String  zip_code_length_error = "Enter 8 digits as a phone number.";
 
   /******************************** ChangePassword screen ******************************/
 

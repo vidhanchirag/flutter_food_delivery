@@ -319,7 +319,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.next,
                     controller: ZipCode_edt_controller,
-                    maxLength: 8,
+                    //maxLength: 8,
                     style: TextStyle(
                       color: AppColors.font_light_gray,
                       fontSize: 16.0,
@@ -557,6 +557,9 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
       return false;
     }else  if (MobileNumber_edt_controller.text.isEmpty) {
       toastmsg.showToast(AppConstant.Add_Mobile_error, context);
+      return false;
+    } else  if (MobileNumber_edt_controller.text.length<10) {
+      toastmsg.showToast(AppConstant.PhoneNumber_length_error, context);
       return false;
     } else  if (City_edt_controller.text.isEmpty) {
       toastmsg.showToast(AppConstant.Add_City_error, context);

@@ -49,7 +49,7 @@ class _HomeFragmentState extends State<HomeFragment> {
 
   late List data;
   late ScaffoldMessengerState scaffoldMessenger;
-  String location = '', Address = '', city = "", latitude = "", longitude = "";
+  String location = '', Address = '', city = "";
 
   @override
   void initState() {
@@ -136,15 +136,15 @@ class _HomeFragmentState extends State<HomeFragment> {
 
     GetAddressFromLatLong(position);
     setState(() {
-      latitude = '${position.latitude}';
-      longitude = '${position.longitude}';
-      print("latitude: " + latitude);
-      print("longitude: " + longitude);
+      Constant.latitude = '${position.latitude}';
+      Constant.longitude = '${position.longitude}';
+      print("latitude: " + Constant.latitude);
+      print("longitude: " + Constant.longitude);
       Constant.isInternetAvailable().then((IsConnected) async {
         if (IsConnected) {
           //onLoaderShow();
 
-          get_home_page_data();
+          get_home_page_data( Constant.latitude,Constant.longitude);
         } else {
           toastmsg.showToast(Appconfig.network_error, context);
         }
@@ -155,8 +155,10 @@ class _HomeFragmentState extends State<HomeFragment> {
   @override
   Widget build(BuildContext context) {
     scaffoldMessenger = ScaffoldMessenger.of(context);
+
     return Scaffold(
       backgroundColor: AppColors.White,
+      resizeToAvoidBottomInset: false,
       body: Column(
         children: [
           Expanded(
@@ -253,7 +255,8 @@ class _HomeFragmentState extends State<HomeFragment> {
                   Visibility(
                     visible: is_show_list,
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 10.0, right: 10, top: 50, bottom: 0),
+                      padding: const EdgeInsets.only(
+                          left: 10.0, right: 10, top: 50, bottom: 0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -437,106 +440,141 @@ class _HomeFragmentState extends State<HomeFragment> {
                                     children: [
                                       Expanded(
                                         child: Padding(
-                                          padding: const EdgeInsets.all(5.0,),
-                                          child: Stack(
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Expanded(
-                                                    child: SizedBox(
-                                                      width: 185,
-                                                      height: 350,
-                                                      child: Image.network(
-                                                        listImages[index]
-                                                            .image_url,
-
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                    ),
-                                                    /* child: Container(
-
-                                                        decoration:  BoxDecoration(
-                                                          image:  DecorationImage(
-                                                              image:  NetworkImage(listImages[index].image_url,),
-
-                                                              fit: BoxFit.cover,),
+                                          padding: const EdgeInsets.all(
+                                            5.0,
+                                          ),
+                                          child: InkWell(
+                                            child: Stack(
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: SizedBox(
+                                                        width: 185,
+                                                        height: 350,
+                                                        child: Image.network(
+                                                          listImages[index]
+                                                              .image_url,
+                                                          fit: BoxFit.cover,
                                                         ),
-                                                      ),*/
-                                                  ),
-                                                ],
-                                              ),
-                                              Opacity(
-                                                opacity: 0.25,
-                                                child: Container(
-                                                  color: AppColors.black,
-                                                ),
-                                                // child: MyGradientWidget(),
-                                              ),
-                                              Container(
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 10.0,
-                                                          right: 10,
-                                                          bottom: 10),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.end,
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          Image.asset(
-                                                            'assets/fast_delivery.png',
-                                                            height: 25,
-                                                            width: 25,
+                                                      ),
+                                                      /* child: Container(
+
+                                                          decoration:  BoxDecoration(
+                                                            image:  DecorationImage(
+                                                                image:  NetworkImage(listImages[index].image_url,),
+
+                                                                fit: BoxFit.cover,),
                                                           ),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    left:
-                                                                        10.0),
-                                                            child: Text(
-                                                              '25min',
-                                                              style:
-                                                                  TextStyle(
-                                                                color:
-                                                                    AppColors
-                                                                        .White,
-                                                                fontSize:
-                                                                    12.0,
-                                                                fontFamily:
-                                                                    'Poppins Regular',
+                                                        ),*/
+                                                    ),
+                                                  ],
+                                                ),
+                                                Opacity(
+                                                  opacity: 0.25,
+                                                  child: Container(
+                                                    color: AppColors.black,
+                                                  ),
+                                                  // child: MyGradientWidget(),
+                                                ),
+                                                Container(
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 10.0,
+                                                            right: 10,
+                                                            bottom: 10),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.end,
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            Image.asset(
+                                                              'assets/fast_delivery.png',
+                                                              height: 25,
+                                                              width: 25,
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      left: 10.0),
+                                                              child: Text(
+                                                                '25min',
+                                                                style: TextStyle(
+                                                                  color: AppColors
+                                                                      .White,
+                                                                  fontSize: 12.0,
+                                                                  fontFamily:
+                                                                      'Poppins Regular',
+                                                                ),
                                                               ),
                                                             ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Row(
-                                                            children: [
-                                                              Image.asset(
-                                                                'assets/doller.png',
-                                                                height: 20,
-                                                                width: 20,
-                                                              ),
-                                                              Padding(
-                                                                padding: const EdgeInsets
-                                                                        .only(
-                                                                    left:
-                                                                        15.0),
+                                                          ],
+                                                        ),
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Row(
+                                                              children: [
+                                                                Image.asset(
+                                                                  'assets/doller.png',
+                                                                  height: 20,
+                                                                  width: 20,
+                                                                ),
+                                                                Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                              .only(
+                                                                          left:
+                                                                              15.0),
+                                                                  child: Text(
+                                                                    listImages[
+                                                                            index]
+                                                                        .delivery_type,
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: AppColors
+                                                                          .White,
+                                                                      fontSize:
+                                                                          12.0,
+                                                                      fontFamily:
+                                                                          'Poppins Regular',
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            Card(
+                                                              color: AppColors
+                                                                  .font_green,
+                                                              shape: RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              5)),
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .fromLTRB(
+                                                                        10,
+                                                                        1,
+                                                                        10,
+                                                                        1),
                                                                 child: Text(
                                                                   listImages[
                                                                           index]
-                                                                      .delivery_type,
+                                                                      .given_stars,
                                                                   style:
                                                                       TextStyle(
-                                                                    color: AppColors
-                                                                        .White,
+                                                                    letterSpacing:
+                                                                        1.0,
+                                                                    color:
+                                                                        AppColors
+                                                                            .White,
                                                                     fontSize:
                                                                         12.0,
                                                                     fontFamily:
@@ -544,47 +582,23 @@ class _HomeFragmentState extends State<HomeFragment> {
                                                                   ),
                                                                 ),
                                                               ),
-                                                            ],
-                                                          ),
-                                                          Card(
-                                                            color: AppColors
-                                                                .font_green,
-                                                            shape: RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5)),
-                                                            child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .fromLTRB(
-                                                                      10,
-                                                                      1,
-                                                                      10,
-                                                                      1),
-                                                              child: Text(
-                                                                listImages[index].given_stars,
-                                                                style:
-                                                                    TextStyle(
-                                                                  letterSpacing:
-                                                                      1.0,
-                                                                  color: AppColors
-                                                                      .White,
-                                                                  fontSize:
-                                                                      12.0,
-                                                                  fontFamily:
-                                                                      'Poppins Regular',
-                                                                ),
-                                                              ),
                                                             ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
+                                            onTap: (){
+                                              Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        SingleRestaurantScreen()),
+                                              );
+                                            },
                                           ),
                                         ),
                                       ),
@@ -668,7 +682,7 @@ class _HomeFragmentState extends State<HomeFragment> {
   }
   */
 
-  Future get_home_page_data() async {
+  Future get_home_page_data(String latitude,String longitude) async {
     Map _params = {
       'radius': '10',
       'latitude': '$latitude',
